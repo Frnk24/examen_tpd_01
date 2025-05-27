@@ -10,10 +10,11 @@
     <name>examen_tdp_01</name>
 
     <properties>
-        <!-- <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir> --> <!-- Comentado por ahora -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source> <!-- CAMBIADO A 1.8 -->
-        <maven.compiler.target>1.8</maven.compiler.target> <!-- CAMBIADO A 1.8 -->
+        <maven.compiler.source>1.8</maven.compiler.source> <!-- Compilar para Java 8 -->
+        <maven.compiler.target>1.8</maven.compiler.target> <!-- Target Java 8 -->
+        <!-- El endorsed.dir y el plugin asociado pueden ser innecesarios, considera eliminarlos si no hay problemas -->
+        <!-- <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir> -->
     </properties>
 
     <dependencies>
@@ -23,7 +24,8 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-        <!-- JAXB API (Necesario para JDK 9+, pero también inofensivo para JDK 8 si ya estaba incluido) -->
+        
+        <!-- JAXB API (Necesario para JDK 9+, inofensivo en JDK 8) -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -36,13 +38,13 @@
             <version>2.3.1</version>
         </dependency>
         
-        <!-- EclipseLink JPA -->
+        <!-- EclipseLink JPA (Proveedor de Persistencia) -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>2.7.12</version>
+            <version>2.7.12</version> 
         </dependency>
-        <!-- JSON-P API -->
+        <!-- JSON-P API (javax.json) -->
         <dependency>
             <groupId>javax.json</groupId>
             <artifactId>javax.json-api</artifactId>
@@ -54,6 +56,8 @@
             <artifactId>javax.json</artifactId>
             <version>1.1.4</version>
         </dependency>
+        
+        <!-- Dependencias transitivas de EclipseLink (a veces necesarias explícitamente) -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.core</artifactId>
@@ -62,7 +66,7 @@
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.asm</artifactId>
-            <version>9.4.0</version>
+            <version>9.4.0</version> <!-- O la que corresponda a eclipselink 2.7.12 -->
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -79,59 +83,58 @@
             <artifactId>org.eclipse.persistence.moxy</artifactId>
             <version>2.7.12</version>
         </dependency>
+        
+        <!-- JPA API (javax.persistence) -->
+        <!-- EclipseLink 2.7.x usa la API javax.persistence. La artifactId "jakarta.persistence" con versión 2.2.3 es para javax.persistence-api 2.2 -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
-            <artifactId>jakarta.persistence</artifactId> <!-- Aunque el artifactId dice jakarta, la versión 2.2.3 es javax.persistence-api 2.2 -->
+            <artifactId>jakarta.persistence</artifactId>
             <version>2.2.3</version>
         </dependency>
+        
+        <!-- JPA Modelgen (Opcional, para generar metamodelos JPA en tiempo de compilación) -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
             <version>2.7.12</version>
             <scope>provided</scope>
         </dependency>
-        <!-- La dependencia de javaee-endorsed-api con <type>jar</type> sin <scope>provided</scope> podría causar problemas. -->
-        <!-- Es más común verla con el maven-dependency-plugin para copiarla al endorsed.dir -->
-        <!-- Si no usas el endorsed mechanism, podrías quitarla o ponerle scope provided. -->
-        <!-- <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-endorsed-api</artifactId>
-            <version>7.0</version>
-            <type>jar</type>
-        </dependency> -->
+        
+        <!-- Java EE Web API (Servlet, etc.) -->
+        <!-- Tomcat 8.5 es un contenedor Java EE 7 (Servlet 3.1) -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
+            <version>7.0</version> <!-- Adecuado para Tomcat 8.5 -->
             <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>examen_tdp_01</finalName> <!-- Nombre del WAR generado (tu context path) -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.8.1</version> <!-- Una versión que soporte bien source/target 1.8 -->
                 <configuration>
                     <!-- Las propiedades maven.compiler.source y target ya definen esto. -->
                     <!-- <source>1.8</source> -->
                     <!-- <target>1.8</target> -->
-                    <!-- <compilerArguments>
-                        <endorseddirs>${endorsed.dir}</endorseddirs>
-                    </compilerArguments> -->
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.3.2</version> <!-- Versión actualizada -->
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!-- Si el mecanismo endorsed no es estrictamente necesario, puedes comentar o eliminar este plugin -->
-            <!-- 
+            
+            <!-- El plugin maven-dependency-plugin para endorsed.dir generalmente no es necesario -->
+            <!-- con Tomcat 8.5 y Java EE 7. Si no lo necesitas, puedes eliminarlo. -->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
