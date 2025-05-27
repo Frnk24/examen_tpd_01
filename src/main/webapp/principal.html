@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Gestión de Estudiantes">
+    <meta name="author" content="Tu Nombre">
+    <title>SB Admin 2 - Gestión de Estudiantes</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .form-control:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="principal.html">
+                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+                <div class="sidebar-brand-text mx-3">Mi App</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="principal.html"><i class="fas fa-fw fa-users"></i><span>Gestión Estudiantes</span></a>
+            </li>
+            <hr class="sidebar-divider">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="nombreUsuarioTopbar">Usuario</span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="cambiocontra.html">
+                                    <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i> Cambiar Contraseña
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Cerrar Sesión
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Gestión de Estudiantes</h1>
+                        <button onclick="imprimirReporte()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-download fa-sm text-white-50"></i> Imprimir Lista
+                        </button>
+                    </div>
+                    <div id="alertMessage" class="alert d-none" role="alert"></div>
+
+                    <!-- Formulario Unificado -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary" id="formTitle">Agregar Estudiante</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="estudianteForm" novalidate>
+                                <input type="hidden" id="codiEstdWeb" name="codiEstdWeb">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ndniEstdWeb" class="form-label">N° DNI (<span class="text-danger">*</span>):</label>
+                                        <input type="text" class="form-control" id="ndniEstdWeb" name="ndniEstdWeb" required maxlength="50">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="logiEstd" class="form-label">Login (Usuario) (<span class="text-danger">*</span>):</label>
+                                        <input type="text" class="form-control" id="logiEstd" name="logiEstd" required maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="appaEstdWeb" class="form-label">Apellido Paterno (<span class="text-danger">*</span>):</label>
+                                        <input type="text" class="form-control" id="appaEstdWeb" name="appaEstdWeb" required maxlength="50">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="apmaEstdWeb" class="form-label">Apellido Materno (<span class="text-danger">*</span>):</label>
+                                        <input type="text" class="form-control" id="apmaEstdWeb" name="apmaEstdWeb" required maxlength="50">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombEstdWeb" class="form-label">Nombres (<span class="text-danger">*</span>):</label>
+                                        <input type="text" class="form-control" id="nombEstdWeb" name="nombEstdWeb" required maxlength="50">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fechNaciEstdWeb" class="form-label">Fecha de Nacimiento (<span class="text-danger">*</span>):</label>
+                                        <input type="date" class="form-control" id="fechNaciEstdWeb" name="fechNaciEstdWeb" required>
+                                    </div>
+                                </div>
+                                <div class="row d-none" id="passwordCreateRow">
+                                     <div class="col-md-6 mb-3">
+                                        <label for="passEstd" class="form-label">Contraseña Inicial (<span class="text-danger">*</span>):</label>
+                                        <input type="password" class="form-control" id="passEstd" name="passEstd" maxlength="500">
+                                        <small class="form-text text-muted">Requerida solo al crear un nuevo estudiante.</small>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-plus"></i> Agregar</button>
+                                <button type="button" class="btn btn-secondary d-none" id="btnCancelEdit"><i class="fas fa-times"></i> Cancelar Edición</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Registros -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Lista de Estudiantes</h6></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="dataTableEstudiantes" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th><th>DNI</th><th>Ap. Paterno</th><th>Ap. Materno</th><th>Nombres</th><th>Fec. Nacimiento</th><th>Login</th><th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="estudiantesTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /.container-fluid -->
+            </div><!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright © Tu App 2024</span></div></div>
+            </footer>
+        </div> <!-- End of Content Wrapper -->
+    </div><!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Listo para Salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">Selecciona "Cerrar Sesión" si estás listo para terminar tu sesión actual.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="index.html" onclick="handleLogout()">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    <!-- Tu script personalizado -->
+    <script>
+        // Protección básica de ruta del lado del cliente (el backend debe ser la principal protección)
+        // if (!sessionStorage.getItem('codiEstdWebLogueado')) {
+        //    alert('Acceso no autorizado. Por favor, inicie sesión.');
+        //    window.location.href = 'login.html';
+        // }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_URL_ESTUDIANTES = '/examen_tdp_01/EstudianteswebServlet'; // Ajusta tu context path
+            const nombreUsuarioTopbar = document.getElementById('nombreUsuarioTopbar');
+            
+            const storedUserName = sessionStorage.getItem('nombreUsuarioLogueado');
+            if (storedUserName) {
+                nombreUsuarioTopbar.textContent = escapeHtml(storedUserName);
+            } else {
+                nombreUsuarioTopbar.textContent = "Usuario"; 
+                 // Si no hay usuario en sessionStorage, considera redirigir o mostrar un estado de "no logueado"
+                 // window.location.href = 'login.html'; 
+            }
+
+            const form = document.getElementById('estudianteForm');
+            const formTitle = document.getElementById('formTitle');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const btnCancelEdit = document.getElementById('btnCancelEdit');
+            const tableBody = document.getElementById('estudiantesTableBody');
+            const alertMessageDiv = document.getElementById('alertMessage');
+            
+            const codiEstdWebField = document.getElementById('codiEstdWeb');
+            const ndniEstdWebField = document.getElementById('ndniEstdWeb');
+            const appaEstdWebField = document.getElementById('appaEstdWeb');
+            const apmaEstdWebField = document.getElementById('apmaEstdWeb');
+            const nombEstdWebField = document.getElementById('nombEstdWeb');
+            const fechNaciEstdWebField = document.getElementById('fechNaciEstdWeb');
+            const logiEstdField = document.getElementById('logiEstd');
+            const passwordCreateRow = document.getElementById('passwordCreateRow');
+            const passEstdField = document.getElementById('passEstd');
+
+            function showAlert(message, type = 'danger') {
+                if(!alertMessageDiv) return;
+                alertMessageDiv.innerHTML = escapeHtml(message); // Usar innerHTML para iconos si los tuviera, sino textContent
+                alertMessageDiv.className = `alert alert-${type} alert-dismissible fade show`; // Para que sea dismissible
+                alertMessageDiv.classList.remove('d-none');
+                
+                // Añadir botón de cierre si no existe
+                if (!alertMessageDiv.querySelector('.btn-close')) {
+                    const closeButton = document.createElement('button');
+                    closeButton.type = 'button';
+                    closeButton.className = 'btn-close';
+                    closeButton.setAttribute('data-bs-dismiss', 'alert'); // Para Bootstrap 5
+                    closeButton.setAttribute('data-dismiss', 'alert'); // Para Bootstrap 4 (SB Admin 2)
+                    closeButton.setAttribute('aria-label', 'Close');
+                    alertMessageDiv.appendChild(closeButton);
+                }
+
+                // Auto-ocultar después de 5 segundos
+                setTimeout(() => {
+                    if (alertMessageDiv.classList.contains('show')) {
+                         // Usar API de Bootstrap para cerrar la alerta si está disponible
+                        const bsAlert = bootstrap?.Alert?.getInstance(alertMessageDiv); // BS5
+                        if (bsAlert) {
+                            bsAlert.close();
+                        } else if (window.jQuery) { // BS4
+                            jQuery(alertMessageDiv).alert('close');
+                        } else {
+                            alertMessageDiv.classList.add('d-none');
+                            alertMessageDiv.classList.remove('show');
+                        }
+                    }
+                }, 5000);
+            }
+
+            function escapeHtml(unsafe) {
+                if (typeof unsafe !== 'string') {
+                    if (unsafe === null || typeof unsafe === 'undefined') return '';
+                    unsafe = String(unsafe);
+                }
+                return unsafe
+                    .replace(/&/g, "&")
+                    .replace(/</g, "<")
+                    .replace(/>/g, ">")
+                    .replace(/"/g, "")
+                    .replace(/'/g, "'");
+            }
+
+            function resetForm() {
+                if(form) form.reset();
+                if(form) form.classList.remove('was-validated'); // Quitar validación de Bootstrap
+                if(codiEstdWebField) codiEstdWebField.value = '';
+                if(formTitle) formTitle.textContent = 'Agregar Estudiante';
+                if(btnSubmit) {
+                    btnSubmit.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+                    btnSubmit.classList.remove('btn-warning');
+                    btnSubmit.classList.add('btn-primary');
+                    btnSubmit.disabled = false;
+                }
+                if(btnCancelEdit) btnCancelEdit.classList.add('d-none');
+                if(passwordCreateRow) passwordCreateRow.classList.add('d-none');
+                if(passEstdField) passEstdField.required = false;
+                if(ndniEstdWebField) ndniEstdWebField.focus();
+            }
+
+            async function fetchApi(url, options = {}) {
+                btnSubmit.disabled = true; // Deshabilitar botón durante la petición
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        let errorData = { message: `Error ${response.status}: ${response.statusText}` };
+                        try { 
+                            const errorJson = await response.json();
+                            errorData.message = errorJson.error || errorData.message; 
+                        } catch (e) { /* No es un JSON de error, usar el mensaje por defecto */ }
+                        throw new Error(errorData.message);
+                    }
+                    return response.status === 204 ? null : await response.json();
+                } catch (error) {
+                    console.error('API Error:', error.message);
+                    showAlert(`Error de comunicación: ${error.message}`, 'danger');
+                    throw error; // Re-lanzar para que el llamador pueda manejarlo si es necesario
+                } finally {
+                     if(btnSubmit) btnSubmit.disabled = false; // Rehabilitar botón
+                }
+            }
+
+            async function fetchGetEstudiantes() {
+                try { 
+                    const estudiantes = await fetchApi(API_URL_ESTUDIANTES);
+                    renderTable(estudiantes); 
+                } catch (error) { /* showAlert ya fue llamado en fetchApi */ }
+            }
+
+            async function fetchGetEstudiantePorId(id) {
+                try { return await fetchApi(`${API_URL_ESTUDIANTES}?codiEstdWeb=${id}`); } 
+                catch (error) { return null; }
+            }
+
+            async function fetchPostEstudiante(data) {
+                try {
+                    await fetchApi(API_URL_ESTUDIANTES, { method: 'POST', headers: { 'Content-Type': 'application/json;charset=UTF-8' }, body: JSON.stringify(data) });
+                    showAlert('Estudiante agregado exitosamente.', 'success');
+                    resetForm();
+                    fetchGetEstudiantes();
+                } catch (error) { /* showAlert ya fue llamado en fetchApi */ }
+            }
+
+            async function fetchPutEstudiante(id, data) {
+                try {
+                    await fetchApi(`${API_URL_ESTUDIANTES}?codiEstdWeb=${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json;charset=UTF-8' }, body: JSON.stringify(data) });
+                    showAlert('Estudiante actualizado exitosamente.', 'success');
+                    resetForm();
+                    fetchGetEstudiantes();
+                } catch (error) { /* showAlert ya fue llamado en fetchApi */ }
+            }
+
+            async function fetchDeleteEstudiante(id) {
+                if (!confirm('¿Estás seguro de que deseas eliminar este estudiante?')) return;
+                try {
+                    await fetchApi(`${API_URL_ESTUDIANTES}?codiEstdWeb=${id}`, { method: 'DELETE' });
+                    showAlert('Estudiante eliminado exitosamente.', 'success');
+                    fetchGetEstudiantes();
+                    if (codiEstdWebField.value === String(id)) resetForm(); // Si el eliminado estaba en el form
+                } catch (error) { /* showAlert ya fue llamado en fetchApi */ }
+            }
+
+            function renderTable(estudiantes) {
+                if(!tableBody) return;
+                tableBody.innerHTML = '';
+                if (!estudiantes || estudiantes.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No hay estudiantes registrados.</td></tr>';
+                    return;
+                }
+                estudiantes.forEach(est => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${escapeHtml(est.codiEstdWeb)}</td><td>${escapeHtml(est.ndniEstdWeb)}</td>
+                        <td>${escapeHtml(est.appaEstdWeb)}</td><td>${escapeHtml(est.apmaEstdWeb)}</td>
+                        <td>${escapeHtml(est.nombEstdWeb)}</td><td>${escapeHtml(est.fechNaciEstdWeb)}</td>
+                        <td>${escapeHtml(est.logiEstd)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning btn-edit" data-id="${est.codiEstdWeb}" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger btn-delete ms-1" data-id="${est.codiEstdWeb}" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </td>`;
+                    tableBody.appendChild(tr);
+                });
+                document.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => handleEdit(b.dataset.id)));
+                document.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', () => fetchDeleteEstudiante(b.dataset.id)));
+            }
+
+            async function handleEdit(id) {
+                const est = await fetchGetEstudiantePorId(id);
+                if (est) {
+                    codiEstdWebField.value = est.codiEstdWeb; 
+                    ndniEstdWebField.value = est.ndniEstdWeb || '';
+                    appaEstdWebField.value = est.appaEstdWeb || ''; 
+                    apmaEstdWebField.value = est.apmaEstdWeb || '';
+                    nombEstdWebField.value = est.nombEstdWeb || ''; 
+                    fechNaciEstdWebField.value = est.fechNaciEstdWeb || ''; // Formato YYYY-MM-DD
+                    logiEstdField.value = est.logiEstd || '';
+                    
+                    formTitle.textContent = 'Modificar Estudiante';
+                    btnSubmit.innerHTML = '<i class="fas fa-save"></i> Actualizar';
+                    btnSubmit.classList.remove('btn-primary'); btnSubmit.classList.add('btn-warning');
+                    btnCancelEdit.classList.remove('d-none');
+                    passwordCreateRow.classList.add('d-none'); passEstdField.required = false;
+                    form.classList.remove('was-validated');
+                    window.scrollTo(0, 0); // Scroll al formulario
+                }
+            }
+
+            if(form){
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if (!form.checkValidity()) {
+                        e.stopPropagation(); 
+                        form.classList.add('was-validated'); // Muestra mensajes de validación de Bootstrap
+                        showAlert('Por favor, complete todos los campos requeridos correctamente.', 'warning'); 
+                        return;
+                    }
+                    // form.classList.remove('was-validated'); // Quitar si se maneja manualmente
+
+                    const data = {
+                        ndniEstdWeb: ndniEstdWebField.value.trim(), 
+                        appaEstdWeb: appaEstdWebField.value.trim(),
+                        apmaEstdWeb: apmaEstdWebField.value.trim(), 
+                        nombEstdWeb: nombEstdWebField.value.trim(),
+                        fechNaciEstdWeb: fechNaciEstdWebField.value, // El input date ya da YYYY-MM-DD
+                        logiEstd: logiEstdField.value.trim()
+                    };
+                    const id = codiEstdWebField.value;
+
+                    if (id) { // Modo Edición
+                        fetchPutEstudiante(id, data); 
+                    } else { // Modo Creación
+                        // Lógica para passEstd si se pide al crear (actualmente oculta por defecto)
+                        if (!passwordCreateRow.classList.contains('d-none') && passEstdField.required) {
+                            if (!passEstdField.value) { // No trim() a la contraseña
+                                showAlert('La contraseña inicial es requerida para nuevos estudiantes.', 'warning'); 
+                                passEstdField.focus(); return;
+                            }
+                            data.passEstd = passEstdField.value;
+                        }
+                        fetchPostEstudiante(data);
+                    }
+                });
+            }
+
+            if(btnCancelEdit) btnCancelEdit.addEventListener('click', resetForm);
+            
+            function setupFormForAdd() {
+                resetForm();
+                // Si quieres que la contraseña sea visible y requerida al agregar, descomenta:
+                // passwordCreateRow.classList.remove('d-none');
+                // passEstdField.required = true;
+            }
+
+            fetchGetEstudiantes(); // Cargar datos iniciales
+            setupFormForAdd(); // Configurar el formulario para modo "Agregar"
+        });
+
+        function handleLogout() {
+            sessionStorage.removeItem('nombreUsuarioLogueado');
+            sessionStorage.removeItem('codiEstdWebLogueado');
+            // Opcional: Llamar a un servlet de logout para invalidar la sesión del servidor
+            // fetch('/examen_tdp_01/LogoutServlet', { method: 'POST' })
+            //    .then(() => window.location.href = 'login.html')
+            //    .catch(() => window.location.href = 'login.html'); // Igual redirige si falla
+            window.location.href = 'login.html';
+        }
+        
+        function imprimirReporte() {
+            window.open('/examen_tdp_01/ReporteEstudiantesServlet', '_blank'); // Ajusta context path
+        }
+    </script>
+</body>
+</html>
